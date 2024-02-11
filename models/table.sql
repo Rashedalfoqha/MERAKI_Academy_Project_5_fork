@@ -32,7 +32,7 @@ CREATE TABLE posts (
     FOREIGN KEY user_id REFERENCES users(id),
     is_deleted SMALLINT DEFAULT 0
 );
-CREATE TABLE comment (
+CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     comment VARCHAR,
     commenter INTEGER,
@@ -41,6 +41,7 @@ CREATE TABLE comment (
     reels_id INTEGER,
     created_at TIMESTAMP DEFAULT NOW(),
     is_deleted SMALLINT DEFAULT 0,
+    FOREIGN KEY commenter REFERENCES users(id),
     FOREIGN KEY post_id REFERENCES posts(id),
     FOREIGN KEY story_id REFERENCES story(id),
     FOREIGN KEY reels_id REFERENCES reels(id)
