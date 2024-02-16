@@ -2,7 +2,7 @@ const { pool } = require("../models/db");
 
 const getAllPost = (req, res) => {
   pool
-    .query(`select * from posts`)
+    .query(`SELECT * FROM posts WHERE is_deleted = 0`)
     .then((result) => {
       res.status(200).json({
         success: true,
@@ -226,5 +226,5 @@ module.exports = {
   getPostByAuthor,
   getPostById,
   getAllPostsUser,
-  getAllPostsFollowers,
+  getAllPostsFollowers
 };
