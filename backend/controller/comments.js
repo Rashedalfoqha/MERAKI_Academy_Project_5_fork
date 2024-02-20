@@ -153,12 +153,12 @@ const getCommentByReelsId = (req, res) => {
 };
 
 const updateCommentPostById = (req, res) => {
-  const id = req.params.id;
-  let { comment } = req.body;
+  const { id } = req.params;
+  const { comment } = req.body;
   const commenter = req.token.userId;
 
   const query = `UPDATE comment_posts SET comment = COALESCE($1,comment) WHERE commenter=$2 AND id=$3 AND is_deleted = 0  RETURNING *;`;
-  const values = [comment || null, commenter, id];
+  const values = [comment, commenter, id];
   pool
     .query(query, values)
     .then((result) => {
@@ -169,14 +169,14 @@ const updateCommentPostById = (req, res) => {
           result: result.rows[0]
         });
       } else {
-        throw new Error("Error happened while updating article");
+        throw new Error("Error happened while updating posts");
       }
     })
     .catch((err) => {
       res.status(500).json({
         success: false,
         message: "Server error",
-        err: err
+        err: err.mes
       });
     });
 };
@@ -198,7 +198,7 @@ const updateCommentStoryById = (req, res) => {
           result: result.rows[0]
         });
       } else {
-        throw new Error("Error happened while updating article");
+        throw new Error("Error happened while updating posts");
       }
     })
     .catch((err) => {
@@ -227,7 +227,7 @@ const updateCommentReelById = (req, res) => {
           result: result.rows[0]
         });
       } else {
-        throw new Error("Error happened while updating article");
+        throw new Error("Error happened while updating posts");
       }
     })
     .catch((err) => {
@@ -239,7 +239,7 @@ const updateCommentReelById = (req, res) => {
     });
 };
 const deleteCommentPost = (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const query = `UPDATE comment_posts SET is_deleted=1 WHERE id=$1`;
   const value = [id];
   pool.query(query, value).then((result) => {
@@ -258,7 +258,7 @@ const deleteCommentPost = (req, res) => {
   });
 };
 const deleteCommentStory = (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const query = `UPDATE comment_story SET is_deleted=1 WHERE id=$1`;
   const value = [id];
   pool.query(query, value).then((result) => {
@@ -277,7 +277,7 @@ const deleteCommentStory = (req, res) => {
   });
 };
 const deleteCommentReels = (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   const query = `UPDATE comment_reel SET is_deleted=1 WHERE id=$1`;
   const value = [id];
   pool.query(query, value).then((result) => {
@@ -305,6 +305,7 @@ module.exports = {
   updateCommentPostById,
   updateCommentStoryById,
   updateCommentReelById,
-  deleteCommentPost,deleteCommentStory,
+  deleteCommentPost,
+  deleteCommentStory,
   deleteCommentReels
 };

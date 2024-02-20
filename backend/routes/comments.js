@@ -24,7 +24,7 @@ const commentsRouter = express.Router();
 commentsRouter.post("/post/:id", authentication, createNewCommentPost);
 commentsRouter.post("/story/:id", authentication, createNewCommentStory);
 commentsRouter.post("/reels/:id", authentication, createNewCommentReels);
-commentsRouter.get("/post/:id", getCommentByPostId);
+commentsRouter.get("/post/:id",getCommentByPostId);
 commentsRouter.get("/story/:id", getCommentByStoryId);
 commentsRouter.get("/reels/:id", getCommentByReelsId);
 commentsRouter.put("/post/:id", authentication, updateCommentPostById);
